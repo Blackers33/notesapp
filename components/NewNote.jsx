@@ -1,7 +1,6 @@
 "use client";
 import { nanoid } from "nanoid";
 import * as React from "react";
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -10,8 +9,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -29,8 +26,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
-
-export default function NewNote(props) {
+function NewNote(props) {
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
 
@@ -39,12 +35,12 @@ export default function NewNote(props) {
 			title,
 			content,
 			date: new Date().toDateString(),
-			id: nanoid()
+			id: nanoid(),
 		});
 	}
 
 	return (
-		<Card className='w-[350px] '>
+		<>
 			<CardHeader>
 				<CardTitle>Create Note</CardTitle>
 			</CardHeader>
@@ -76,6 +72,47 @@ export default function NewNote(props) {
 				<Button variant='outline'>Cancel</Button>
 				<Button onClick={handleClick}>Add Note</Button>
 			</CardFooter>
-		</Card>
+		</>
+	);
+}
+
+function PlusIcon() {
+	return (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			width='24'
+			height='24'
+			viewBox='0 0 24 24'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		>
+			<path d='M5 12h14' />
+			<path d='M12 5v14' />
+		</svg>
+	);
+}
+
+export default function NotePopover({ onAddNote }) {
+	return (
+		<Popover>
+			<PopoverTrigger asChild>
+				<div className='fixed bottom-8 right-8 z-50 rounded-full shadow-lg'>
+					<Button
+						variant='fab'
+						size='icon'
+						className='h-16 w-16 rounded-full bg-gray-900 text-gray-50 shadow-lg transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
+					>
+						<PlusIcon />
+						<span className='sr-only'>Add</span>
+					</Button>
+				</div>
+			</PopoverTrigger>
+			<PopoverContent className='w-80'>
+				<NewNote onAddNote={onAddNote} />
+			</PopoverContent>
+		</Popover>
 	);
 }
