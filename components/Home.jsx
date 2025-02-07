@@ -15,7 +15,7 @@ function Home() {
 	}
 
 	function handleDeleteNote(id) {
-		setNotes(notes.filter(note=>note.id !== id))
+		setNotes(notes.filter((note) => note.id !== id));
 	}
 
 	return (
