@@ -5,7 +5,8 @@ import Note from "./../components/Note";
 import NotePopover from "./../components/NewNote";
 import { createContext } from "react";
 
-export const LevelContext = createContext(1);
+
+//export const handleAddNotesContext = createContext(1);
 
 function Home() {
 	const [notes, setNotes] = React.useState([]);

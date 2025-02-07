@@ -29,7 +29,7 @@ import { PopoverClose } from "@radix-ui/react-popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useContext } from "react";
-import { LevelContext } from "./../app/page";
+import { handleAddNotesContext } from "./Home";
 
 
 export default function NotePopover({ onAddNote }) {
@@ -95,7 +95,7 @@ function NewNote({onAddNote}) {
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
 
-	 const level = useContext(LevelContext);
+	 const level = useContext(handleAddNotesContext);
 
 	function handleClick() {
 		if (title && content) {
@@ -114,7 +114,7 @@ function NewNote({onAddNote}) {
 				<form className="mt-6">
 					<div className='grid w-full items-center gap-4'>
 						<div className='flex flex-col space-y-1.5'>
-							<Label htmlFor='title'>Title</Label>
+							<Label htmlFor='title'>Title{level}</Label>
 							<Input
 								value={title}
 								id='title'
