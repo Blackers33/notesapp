@@ -28,12 +28,8 @@ import {
 import { PopoverClose } from "@radix-ui/react-popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { useContext } from "react";
-import { handleAddNotesContext } from "./Home";
-
 
 export default function NotePopover({ onAddNote }) {
-
 	function PlusIcon() {
 		return (
 			<svg
@@ -67,7 +63,7 @@ export default function NotePopover({ onAddNote }) {
 					</Button>
 				</div>
 			</PopoverTrigger>
-			<PopoverContent className='w-auto mx-8'>
+			<PopoverContent className='w-screen sm:w-auto x-8'>
 				<NoteTabs onAddNote={onAddNote} />
 			</PopoverContent>
 		</Popover>
@@ -76,7 +72,7 @@ export default function NotePopover({ onAddNote }) {
 
 function NoteTabs({ onAddNote }) {
 	return (
-		<Tabs defaultValue='newnote' className='w-[400px]'>
+		<Tabs defaultValue='newnote' className='w-auto'>
 			<TabsList className='grid w-full grid-cols-2'>
 				<TabsTrigger value='newnote'>Create Note</TabsTrigger>
 				<TabsTrigger value='noteoptions'>Options</TabsTrigger>
@@ -84,18 +80,16 @@ function NoteTabs({ onAddNote }) {
 			<TabsContent value='newnote'>
 				<NewNote onAddNote={onAddNote} />
 			</TabsContent>
-			<TabsContent value='noteoptions'>
-				Note options here
-			</TabsContent>
+			<TabsContent value='noteoptions'>Note options here</TabsContent>
 		</Tabs>
 	);
 }
 
-function NewNote({onAddNote}) {
+function NewNote({ onAddNote }) {
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
 
-	 const level = useContext(handleAddNotesContext);
+	//const level = useContext(handleAddNotesContext);
 
 	function handleClick() {
 		if (title && content) {
@@ -111,20 +105,22 @@ function NewNote({onAddNote}) {
 	return (
 		<>
 			<CardContent>
-				<form className="mt-6">
+				<form className='mt-6'>
 					<div className='grid w-full items-center gap-4'>
-						<div className='flex flex-col space-y-1.5'>
-							<Label htmlFor='title'>Title{level}</Label>
+						<div className='flex flex-col'>
+		
 							<Input
+								className='border-none !text-xl placeholder:text-xl '
 								value={title}
 								id='title'
-								placeholder='Title of your note'
+								placeholder='Title'
 								onChange={(e) => setTitle(e.target.value)}
 							/>
 						</div>
-						<div className='flex flex-col space-y-1.5'>
-							<Label htmlFor='content'>Content</Label>
+						<div className='flex flex-col'>
+						
 							<Textarea
+								className='border-none min-h-48'
 								value={content}
 								id='content'
 								placeholder='Content...'
@@ -145,4 +141,3 @@ function NewNote({onAddNote}) {
 		</>
 	);
 }
-

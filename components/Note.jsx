@@ -47,9 +47,9 @@ export default function Note(props) {
 					</AlertDialogTrigger>
 					<AlertDialogContent>
 						<AlertDialogHeader>
-							<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+							<AlertDialogTitle>Are you sure?</AlertDialogTitle>
 							<AlertDialogDescription>
-								This action cannot be undone. This will permanently delete your
+								This will permanently delete your
 								note.
 							</AlertDialogDescription>
 						</AlertDialogHeader>

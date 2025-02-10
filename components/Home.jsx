@@ -19,6 +19,28 @@ function Home() {
 		setNotes(notes.filter((note) => note.id !== id));
 	}
 
+	async function checkStatus() {
+		const res = await fetch("/api/notes");
+		const data = await res.json();
+		console.log(data); // true
+	}
+
+
+	const data = checkStatus()
+
+	async function createNote(title, content) {
+		const res = await fetch("/api/notes", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ title, content }),
+		});
+		const data = await res.json();
+		console.log(data);
+	}
+
+	const note = createNote('aa', 'bbc')
+
+
 	return (
 		<div>
 			<Navbar />
