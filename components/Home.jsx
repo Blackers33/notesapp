@@ -1,45 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./../components/Navbar";
 import Note from "./../components/Note";
 import NotePopover from "./../components/NewNote";
-import { createContext } from "react";
-
-
-//export const handleAddNotesContext = createContext(1);
+import { useDispatch, useSelector } from "react-redux";
+import { addNotesFromDb } from "@/app/redux/notes";
 
 function Home() {
-	const [notes, setNotes] = React.useState([]);
 
-	function handleAddNote(newNote) {
-		setNotes([...notes, newNote]);
-	}
+	const notes = useSelector((state) => state.notes.data);
+	const dispatch = useDispatch();
 
+
+	//TODO : suppr
 	function handleDeleteNote(id) {
 		setNotes(notes.filter((note) => note.id !== id));
 	}
 
-	async function checkStatus() {
+	async function fetchNotesFromDb() {
 		const res = await fetch("/api/notes");
 		const data = await res.json();
-		console.log(data); // true
+		dispatch(addNotesFromDb(data));
 	}
 
-
-	const data = checkStatus()
-
-	async function createNote(title, content) {
-		const res = await fetch("/api/notes", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ title, content }),
-		});
-		const data = await res.json();
-		console.log(data);
-	}
-
-	const note = createNote('aa', 'bbc')
-
+	useEffect(() => {
+		fetchNotesFromDb();
+	}, []);
 
 	return (
 		<div>
@@ -49,7 +35,7 @@ function Home() {
 					<Note {...note} key={note.id} onDeleteNote={handleDeleteNote} />
 				))}
 			</div>
-			<NotePopover onAddNote={handleAddNote} />
+			<NotePopover />
 		</div>
 	);
 }

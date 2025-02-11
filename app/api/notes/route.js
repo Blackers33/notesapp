@@ -18,11 +18,13 @@ export async function GET() {
 export async function POST(req) {
 	await notesDB();
 	try {
-		const { title, content } = await req.json();
-		const newNote = new Note({ title, content });
+		const { ...noteData } = await req.json();
+		const newNote = new Note({...noteData});
+
 		await newNote.save();
-		return NextResponse.json(newUser, { status: 201 });
+		return NextResponse.json(newNote, { status: 201 });
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json({ error: "Erreur de création" }, { status: 500 });
 	}
 }

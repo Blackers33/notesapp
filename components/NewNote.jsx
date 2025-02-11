@@ -9,17 +9,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import {
 	Popover,
 	PopoverContent,
@@ -27,9 +21,94 @@ import {
 } from "@/components/ui/popover";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDispatch } from "react-redux";
+import { addNote } from "@/app/redux/notes";
 
+function NewNote() {
+	const [title, setTitle] = React.useState("");
+	const [content, setContent] = React.useState("");
 
-export default function NotePopover({ onAddNote }) {
+	async function createNoteInDb({ ...notesData }) {
+		await fetch("/api/notes", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ ...notesData }),
+		});
+	}
+
+	const dispatch = useDispatch();
+
+	async function handleClick() {
+		if (content) {
+			const date = new Date();
+			const id = nanoid();
+
+			await createNoteInDb({ title, content, date, id });
+			dispatch(
+				addNote({
+					title,
+					content,
+					date: date.toDateString(),
+					id,
+				})
+			);
+		}
+	}
+
+	return (
+		<>
+			<CardContent>
+				<form className='mt-6'>
+					<div className='grid w-full items-center gap-4'>
+						<div className='flex flex-col'>
+							<Input
+								className='border-none !text-xl placeholder:text-xl '
+								value={title}
+								id='title'
+								placeholder='Title'
+								onChange={(e) => setTitle(e.target.value)}
+							/>
+						</div>
+						<div className='flex flex-col'>
+							<Textarea
+								className='border-none min-h-48'
+								value={content}
+								id='content'
+								placeholder='Content...'
+								onChange={(e) => setContent(e.target.value)}
+							/>
+						</div>
+					</div>
+				</form>
+			</CardContent>
+			<CardFooter className='flex justify-between'>
+				<PopoverClose asChild>
+					<Button variant='outline'>Cancel</Button>
+				</PopoverClose>
+				<PopoverClose asChild>
+					<Button onClick={handleClick}>Add Note</Button>
+				</PopoverClose>
+			</CardFooter>
+		</>
+	);
+}
+
+function NoteTabs() {
+	return (
+		<Tabs defaultValue='newnote' className='w-auto'>
+			<TabsList className='grid w-full grid-cols-2'>
+				<TabsTrigger value='newnote'>Create Note</TabsTrigger>
+				<TabsTrigger value='noteoptions'>Options</TabsTrigger>
+			</TabsList>
+			<TabsContent value='newnote'>
+				<NewNote/>
+			</TabsContent>
+			<TabsContent value='noteoptions'>Note options here</TabsContent>
+		</Tabs>
+	);
+}
+
+export default function NotePopover() {
 	function PlusIcon() {
 		return (
 			<svg
@@ -64,80 +143,8 @@ export default function NotePopover({ onAddNote }) {
 				</div>
 			</PopoverTrigger>
 			<PopoverContent className='w-screen sm:w-auto x-8'>
-				<NoteTabs onAddNote={onAddNote} />
+				<NoteTabs/>
 			</PopoverContent>
 		</Popover>
-	);
-}
-
-function NoteTabs({ onAddNote }) {
-	return (
-		<Tabs defaultValue='newnote' className='w-auto'>
-			<TabsList className='grid w-full grid-cols-2'>
-				<TabsTrigger value='newnote'>Create Note</TabsTrigger>
-				<TabsTrigger value='noteoptions'>Options</TabsTrigger>
-			</TabsList>
-			<TabsContent value='newnote'>
-				<NewNote onAddNote={onAddNote} />
-			</TabsContent>
-			<TabsContent value='noteoptions'>Note options here</TabsContent>
-		</Tabs>
-	);
-}
-
-function NewNote({ onAddNote }) {
-	const [title, setTitle] = React.useState("");
-	const [content, setContent] = React.useState("");
-
-	//const level = useContext(handleAddNotesContext);
-
-	function handleClick() {
-		if (title && content) {
-			onAddNote({
-				title,
-				content,
-				date: new Date().toDateString(),
-				id: nanoid(),
-			});
-		}
-	}
-
-	return (
-		<>
-			<CardContent>
-				<form className='mt-6'>
-					<div className='grid w-full items-center gap-4'>
-						<div className='flex flex-col'>
-		
-							<Input
-								className='border-none !text-xl placeholder:text-xl '
-								value={title}
-								id='title'
-								placeholder='Title'
-								onChange={(e) => setTitle(e.target.value)}
-							/>
-						</div>
-						<div className='flex flex-col'>
-						
-							<Textarea
-								className='border-none min-h-48'
-								value={content}
-								id='content'
-								placeholder='Content...'
-								onChange={(e) => setContent(e.target.value)}
-							/>
-						</div>
-					</div>
-				</form>
-			</CardContent>
-			<CardFooter className='flex justify-between'>
-				<PopoverClose asChild>
-					<Button variant='outline'>Cancel</Button>
-				</PopoverClose>
-				<PopoverClose asChild>
-					<Button onClick={handleClick}>Add Note</Button>
-				</PopoverClose>
-			</CardFooter>
-		</>
 	);
 }

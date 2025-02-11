@@ -20,26 +20,25 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+
+
+
 
 export default function Note(props) {
 	return (
 		<Card className='w-[350px] '>
 			<CardHeader>
-				<CardTitle>{props.title}</CardTitle>
+				<CardTitle>
+					{/* Shows title if any, shows "Untitled" otherwise */}
+					{props.title ? (
+						props.title
+					) : (
+						<span className='text-gray-300 italic'>Untitled</span>
+					)}
+				</CardTitle>
 				<CardDescription>{props.date}</CardDescription>
 			</CardHeader>
-			<CardContent>
-				{props.content}
-			</CardContent>
+			<CardContent>{props.content}</CardContent>
 			<CardFooter className='flex justify-between'>
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
@@ -49,13 +48,14 @@ export default function Note(props) {
 						<AlertDialogHeader>
 							<AlertDialogTitle>Are you sure?</AlertDialogTitle>
 							<AlertDialogDescription>
-								This will permanently delete your
-								note.
+								This will permanently delete your note.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel>Cancel</AlertDialogCancel>
-							<AlertDialogAction onClick={()=> props.onDeleteNote(props.id)}>Continue</AlertDialogAction>
+							<AlertDialogAction onClick={() => props.onDeleteNote(props.id)}>
+								Continue
+							</AlertDialogAction>
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>
