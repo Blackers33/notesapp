@@ -4,17 +4,19 @@ import Navbar from "./../components/Navbar";
 import Note from "./../components/Note";
 import NotePopover from "./../components/NewNote";
 import { useDispatch, useSelector } from "react-redux";
-import { addNotesFromDb } from "@/app/redux/notes";
+import { addNotesFromDb, deleteNote } from "@/app/redux/notes";
 
 function Home() {
-
 	const notes = useSelector((state) => state.notes.data);
 	const dispatch = useDispatch();
 
-
 	//TODO : suppr
-	function handleDeleteNote(id) {
-		setNotes(notes.filter((note) => note.id !== id));
+	async function handleDeleteNote(id) {
+		dispatch(deleteNote(id));
+		const result = await fetch("http://localhost:3000/api/notes?id=" + id, {
+			method: "DELETE",
+		});
+		if (result.status !== 200) console.log("Error deleting note");
 	}
 
 	async function fetchNotesFromDb() {
@@ -31,7 +33,7 @@ function Home() {
 		<div>
 			<Navbar />
 			<div className='m-6 flex flex-wrap gap-5'>
-				{notes.map((note) => (
+				{notes.toReversed().map((note) => (
 					<Note {...note} key={note.id} onDeleteNote={handleDeleteNote} />
 				))}
 			</div>

@@ -25,6 +25,7 @@ import {
 
 
 export default function Note(props) {
+	const date = new Date(props.date).toDateString();
 	return (
 		<Card className='w-[350px] '>
 			<CardHeader>
@@ -36,7 +37,7 @@ export default function Note(props) {
 						<span className='text-gray-300 italic'>Untitled</span>
 					)}
 				</CardTitle>
-				<CardDescription>{props.date}</CardDescription>
+				<CardDescription>{date}</CardDescription>
 			</CardHeader>
 			<CardContent>{props.content}</CardContent>
 			<CardFooter className='flex justify-between'>
