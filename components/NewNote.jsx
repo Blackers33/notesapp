@@ -27,6 +27,7 @@ import { addNote } from "@/app/redux/notes";
 function NewNote() {
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
+	const [style, setStyle] = React.useState({background: "hello", title: "title", content: "world"})
 
 	async function createNoteInDb({ ...notesData }) {
 		await fetch("/api/notes", {
@@ -40,16 +41,19 @@ function NewNote() {
 
 	async function handleClick() {
 		if (content) {
-			const date = new Date();
+	
 			const id = nanoid();
 
-			await createNoteInDb({ title, content, date, id });
+			//Add to database
+			await createNoteInDb({ title, content, date, id, style});
+			//Add to redux
 			dispatch(
 				addNote({
 					title,
 					content,
 					date: date.toDateString(),
 					id,
+					style
 				})
 			);
 		}
@@ -93,6 +97,10 @@ function NewNote() {
 	);
 }
 
+function NoteOptions(){
+	
+}
+
 function NoteTabs() {
 	return (
 		<Tabs defaultValue='newnote' className='w-auto'>
@@ -109,24 +117,6 @@ function NoteTabs() {
 }
 
 export default function NotePopover() {
-	function PlusIcon() {
-		return (
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				width='24'
-				height='24'
-				viewBox='0 0 24 24'
-				fill='none'
-				stroke='currentColor'
-				strokeWidth='2'
-				strokeLinecap='round'
-				strokeLinejoin='round'
-			>
-				<path d='M5 12h14' />
-				<path d='M12 5v14' />
-			</svg>
-		);
-	}
 
 	return (
 		<Popover>
@@ -137,13 +127,26 @@ export default function NotePopover() {
 						size='icon'
 						className='h-16 w-16 rounded-full bg-gray-900 text-gray-50 shadow-lg transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
 					>
-						<PlusIcon />
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							width='24'
+							height='24'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							strokeWidth='2'
+							strokeLinecap='round'
+							strokeLinejoin='round'
+						>
+							<path d='M5 12h14' />
+							<path d='M12 5v14' />
+						</svg>
 						<span className='sr-only'>Add</span>
 					</Button>
 				</div>
 			</PopoverTrigger>
 			<PopoverContent className='w-screen sm:w-auto x-8'>
-				<NoteTabs/>
+				<NoteTabs />
 			</PopoverContent>
 		</Popover>
 	);

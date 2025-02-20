@@ -21,9 +21,13 @@ export async function POST(req) {
 	await notesDB();
 	try {
 		const { ...noteData } = await req.json();
+		
 		const newNote = new Note({ ...noteData });
 
 		await newNote.save();
+
+		console.log("Note sauvegardée :", newNote);
+	
 		return NextResponse.json(newNote, { status: 201 });
 	} catch (error) {
 		console.log(error);

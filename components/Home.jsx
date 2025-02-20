@@ -29,6 +29,8 @@ function Home() {
 		fetchNotesFromDb();
 	}, []);
 
+	console.log(notes[notes.length-1])
+
 	return (
 		<div>
 			<Navbar />
