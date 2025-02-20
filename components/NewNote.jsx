@@ -25,51 +25,64 @@ import { useDispatch } from "react-redux";
 import { addNote } from "@/app/redux/notes";
 
 function NewNote(props) {
-
 	return (
-		<>
-			<CardContent>
-				<form className='mt-6'>
-					<div className='grid w-full items-center gap-4'>
-						<div className='flex flex-col'>
-							<Input
-								className='border-none !text-xl placeholder:text-xl '
-								value={props.title}
-								id='title'
-								placeholder='Title'
-								onChange={(e) => props.setTitle(e.target.value)}
-							/>
-						</div>
-						<div className='flex flex-col'>
-							<Textarea
-								className='border-none min-h-48'
-								value={props.content}
-								id='content'
-								placeholder='Content...'
-								onChange={(e) => props.setContent(e.target.value)}
-							/>
-						</div>
+		<CardContent>
+			<form className='mt-6'>
+				<div className='grid w-full items-center gap-4'>
+					<div className='flex flex-col'>
+						<Input
+							className='border-none !text-xl placeholder:text-xl '
+							value={props.title}
+							id='title'
+							placeholder='Title'
+							onChange={(e) => props.setTitle(e.target.value)}
+						/>
 					</div>
-				</form>
-			</CardContent>
-			<CardFooter className='flex justify-between'>
-				<PopoverClose asChild>
-					<Button variant='outline'>Cancel</Button>
-				</PopoverClose>
-				<PopoverClose asChild>
-					<Button onClick={props.onClick}>Add Note</Button>
-				</PopoverClose>
-			</CardFooter>
-		</>
+					<div className='flex flex-col'>
+						<Textarea
+							className='border-none min-h-48'
+							value={props.content}
+							id='content'
+							placeholder='Content...'
+							onChange={(e) => props.setContent(e.target.value)}
+						/>
+					</div>
+				</div>
+			</form>
+		</CardContent>
 	);
 }
 
-function NoteOptions(){
-	
+function NoteOptions(props) {
+	return (
+		<CardContent>
+			<form className='mt-6'>
+				<div className='grid w-full items-center gap-4'>
+					Note color :
+					<div className='flex gap-3'>
+						<button
+							type='button'
+							onClick={() => props.setStyle({...props.style, background: "white" })}
+							className='border border-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
+						/>
+						<button
+							type='button'
+							//onClick={() => props.setColor("yellow")}
+							className='border border-gray-400 bg-gradient-to-br from-yellow-400 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
+						/>
+						<button
+							type='button'
+							//onClick={() => props.setColor("blue")}
+							className='border border-gray-400 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
+						/>
+					</div>
+				</div>
+			</form>
+		</CardContent>
+	);
 }
 
 function NoteTabs() {
-
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
 	const [style, setStyle] = React.useState({
@@ -77,6 +90,8 @@ function NoteTabs() {
 		title: "title",
 		content: "world",
 	});
+
+	console.log(style)
 
 	async function createNoteInDb({ ...notesData }) {
 		await fetch("/api/notes", {
@@ -89,7 +104,6 @@ function NoteTabs() {
 	const dispatch = useDispatch();
 
 	async function handleClick() {
-		console.log('handleclick')
 		if (content) {
 			const id = nanoid();
 			const date = new Date();
@@ -110,21 +124,39 @@ function NoteTabs() {
 	}
 
 	return (
-		<Tabs defaultValue='newnote' className='w-auto'>
-			<TabsList className='grid w-full grid-cols-2'>
-				<TabsTrigger value='newnote'>Create Note</TabsTrigger>
-				<TabsTrigger value='noteoptions'>Options</TabsTrigger>
-			</TabsList>
-			<TabsContent value='newnote'>
-				<NewNote onClick={handleClick} title={title} content={content} setTitle={setTitle} setContent={setContent}/>
-			</TabsContent>
-			<TabsContent value='noteoptions'>Note options here</TabsContent>
-		</Tabs>
+		<>
+			<Tabs defaultValue='newnote' className='w-auto'>
+				{/* NOTE EDITOR */}
+				<TabsList className='grid w-full grid-cols-2'>
+					<TabsTrigger value='newnote'>Create Note</TabsTrigger>
+					<TabsTrigger value='noteoptions'>Options</TabsTrigger>
+				</TabsList>
+				<TabsContent value='newnote'>
+					<NewNote
+						title={title}
+						content={content}
+						setTitle={setTitle}
+						setContent={setContent}
+					/>
+				</TabsContent>
+				{/* NOTE OPTIONS */}
+				<TabsContent value='noteoptions'><NoteOptions style={style} setStyle={setStyle}/></TabsContent>
+			</Tabs>
+
+			{/* CARD FOOTER */}
+			<CardFooter className='flex justify-between'>
+				<PopoverClose asChild>
+					<Button variant='outline'>Cancel</Button>
+				</PopoverClose>
+				<PopoverClose asChild>
+					<Button onClick={handleClick}>Add Note</Button>
+				</PopoverClose>
+			</CardFooter>
+		</>
 	);
 }
 
 export default function NotePopover() {
-
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
