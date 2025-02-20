@@ -18,7 +18,6 @@ const notesSlice = createSlice({
 		},
 
 		deleteNote: (state, action) => {
-			console.log('redux', action.payload)
 
 			state.data = state.data.filter((note) => note.id !== action.payload);
 

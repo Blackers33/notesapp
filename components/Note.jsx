@@ -26,7 +26,7 @@ import {
 
 
 export default function Note(props) {
-	console.log(props)
+
 	const date = new Date(props.date).toDateString();
 	return (
 		<Card className='w-[350px]'>

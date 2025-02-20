@@ -24,10 +24,59 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch } from "react-redux";
 import { addNote } from "@/app/redux/notes";
 
-function NewNote() {
+function NewNote(props) {
+
+	return (
+		<>
+			<CardContent>
+				<form className='mt-6'>
+					<div className='grid w-full items-center gap-4'>
+						<div className='flex flex-col'>
+							<Input
+								className='border-none !text-xl placeholder:text-xl '
+								value={props.title}
+								id='title'
+								placeholder='Title'
+								onChange={(e) => props.setTitle(e.target.value)}
+							/>
+						</div>
+						<div className='flex flex-col'>
+							<Textarea
+								className='border-none min-h-48'
+								value={props.content}
+								id='content'
+								placeholder='Content...'
+								onChange={(e) => props.setContent(e.target.value)}
+							/>
+						</div>
+					</div>
+				</form>
+			</CardContent>
+			<CardFooter className='flex justify-between'>
+				<PopoverClose asChild>
+					<Button variant='outline'>Cancel</Button>
+				</PopoverClose>
+				<PopoverClose asChild>
+					<Button onClick={props.onClick}>Add Note</Button>
+				</PopoverClose>
+			</CardFooter>
+		</>
+	);
+}
+
+function NoteOptions(){
+	
+}
+
+function NoteTabs() {
+
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
-	const [style, setStyle] = React.useState({background: "hello", title: "title", content: "world"})
+	const [style, setStyle] = React.useState({
+		background: "hello",
+		title: "title",
+		content: "world",
+	});
 
 	async function createNoteInDb({ ...notesData }) {
 		await fetch("/api/notes", {
@@ -40,12 +89,13 @@ function NewNote() {
 	const dispatch = useDispatch();
 
 	async function handleClick() {
+		console.log('handleclick')
 		if (content) {
-	
 			const id = nanoid();
+			const date = new Date();
 
 			//Add to database
-			await createNoteInDb({ title, content, date, id, style});
+			await createNoteInDb({ title, content, date, id, style });
 			//Add to redux
 			dispatch(
 				addNote({
@@ -53,55 +103,12 @@ function NewNote() {
 					content,
 					date: date.toDateString(),
 					id,
-					style
+					style,
 				})
 			);
 		}
 	}
 
-	return (
-		<>
-			<CardContent>
-				<form className='mt-6'>
-					<div className='grid w-full items-center gap-4'>
-						<div className='flex flex-col'>
-							<Input
-								className='border-none !text-xl placeholder:text-xl '
-								value={title}
-								id='title'
-								placeholder='Title'
-								onChange={(e) => setTitle(e.target.value)}
-							/>
-						</div>
-						<div className='flex flex-col'>
-							<Textarea
-								className='border-none min-h-48'
-								value={content}
-								id='content'
-								placeholder='Content...'
-								onChange={(e) => setContent(e.target.value)}
-							/>
-						</div>
-					</div>
-				</form>
-			</CardContent>
-			<CardFooter className='flex justify-between'>
-				<PopoverClose asChild>
-					<Button variant='outline'>Cancel</Button>
-				</PopoverClose>
-				<PopoverClose asChild>
-					<Button onClick={handleClick}>Add Note</Button>
-				</PopoverClose>
-			</CardFooter>
-		</>
-	);
-}
-
-function NoteOptions(){
-	
-}
-
-function NoteTabs() {
 	return (
 		<Tabs defaultValue='newnote' className='w-auto'>
 			<TabsList className='grid w-full grid-cols-2'>
@@ -109,7 +116,7 @@ function NoteTabs() {
 				<TabsTrigger value='noteoptions'>Options</TabsTrigger>
 			</TabsList>
 			<TabsContent value='newnote'>
-				<NewNote/>
+				<NewNote onClick={handleClick} title={title} content={content} setTitle={setTitle} setContent={setContent}/>
 			</TabsContent>
 			<TabsContent value='noteoptions'>Note options here</TabsContent>
 		</Tabs>

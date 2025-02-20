@@ -10,6 +10,7 @@ function Home() {
 	const notes = useSelector((state) => state.notes.data);
 	const dispatch = useDispatch();
 
+
 	//TODO : suppr
 	async function handleDeleteNote(id) {
 		dispatch(deleteNote(id));
@@ -29,15 +30,18 @@ function Home() {
 		fetchNotesFromDb();
 	}, []);
 
-	console.log(notes[notes.length-1])
+
 
 	return (
 		<div>
 			<Navbar />
 			<div className='m-6 flex flex-wrap gap-5'>
-				{notes.toReversed().map((note) => (
-					<Note {...note} key={note.id} onDeleteNote={handleDeleteNote} />
-				))}
+				{notes
+					.slice()
+					.reverse()
+					.map((note) => (
+						<Note {...note} key={note.id} onDeleteNote={handleDeleteNote} />
+					))}
 			</div>
 			<NotePopover />
 		</div>
