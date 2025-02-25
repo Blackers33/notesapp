@@ -58,6 +58,7 @@ export default {
 			},
 			fontFamily: {
 				oldLondon: ["OldLondon", "serif"],
+				freeBsc: ["FreeBsc", "serif"]
 			},
 		},
 	},

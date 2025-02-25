@@ -46,14 +46,17 @@ function NewNote(props) {
 }
 
 function NoteOptions(props) {
-	const [value, setValue] = React.useState("left");
-
 	return (
 		<CardContent>
 			<form className='mt-6'>
 				<div className='w-full gap-4'>
-					Note color :
-					<div className='flex gap-3 mb-5'>
+					{/* 
+
+					NOTE COLOR
+
+					 */}
+					<span className='text-gray-400'>Note color :</span>
+					<div className='flex gap-3 mb-8'>
 						<button
 							type='button'
 							onClick={() =>
@@ -83,21 +86,91 @@ function NoteOptions(props) {
 							className='border border-gray-400 bg-gradient-to-br from-green-600 to-green-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
 						/>
 					</div>
-					Title style :
-					<div className='flex'>
-						<ToggleGroup.Root
-							type='single'
-							value={value}
-							onValueChange={(value) => {
-								if (value) setValue(value);
-							}}
-						>
-							<ToggleGroup type='single'>
-								<ToggleGroupItem value='left'>left</ToggleGroupItem>
-								<ToggleGroupItem value='center'>center</ToggleGroupItem>
-								<ToggleGroupItem value='right'>right</ToggleGroupItem>
-							</ToggleGroup>
-						</ToggleGroup.Root>
+					{/* 
+
+					TITLE STYLE
+
+					 */}
+					<span className='text-gray-400'>Title style :</span>
+					<div className='flex mb-5 mt-3'>
+						<ToggleGroup type='single'>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({
+										...props.style,
+										title: "text-xl",
+									})
+								}
+								value='regular'
+							>
+								<span className='text-2xl'>Regular</span>
+							</ToggleGroupItem>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({
+										...props.style,
+										title: "font-oldLondon text-3xl",
+									})
+								}
+								value='oldLondon'
+							>
+								<span className='font-oldLondon text-2xl relative -top-1'>
+									Old London
+								</span>
+							</ToggleGroupItem>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({
+										...props.style,
+										title: "font-freeBsc text-3xl",
+									})
+								}
+								value='calligraphy'
+							>
+								<span className='text-2xl font-freeBsc relative top-1'>
+									Calligraphy
+								</span>
+							</ToggleGroupItem>
+						</ToggleGroup>
+					</div>
+					{/* 
+
+					CONTENT STYLE
+
+					 */}
+					<span className='text-gray-400'>Content style :</span>
+					<div className='flex mb-5 mt-3'>
+						<ToggleGroup type='single'>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({ ...props.style, content: null })
+								}
+								value='regular'
+							>
+								<span className='text-2xl'>Regular</span>
+							</ToggleGroupItem>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({
+										...props.style,
+										content: "font-serif",
+									})
+								}
+								value='serif'
+							>
+								<span className='font-serif text-2xl'>Serif</span>
+							</ToggleGroupItem>
+							<ToggleGroupItem
+								onClick={() =>
+									props.setStyle({ ...props.style, content: "font-mono" })
+								}
+								value='mono'
+							>
+								<span className='font-mono text-2xl relative top-0.5'>
+									Mono
+								</span>
+							</ToggleGroupItem>
+						</ToggleGroup>
 					</div>
 				</div>
 			</form>
@@ -110,7 +183,7 @@ function NoteTabs() {
 	const [content, setContent] = React.useState("");
 	const [style, setStyle] = React.useState({
 		background: null,
-		title: null,
+		title: "text-xl",
 		content: null,
 	});
 

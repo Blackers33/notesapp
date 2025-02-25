@@ -28,11 +28,11 @@ import {
 export default function Note(props) {
 
 	const date = new Date(props.date).toDateString();
-	
+
 	return (
 		<Card className={`w-[350px] ${props.style.background}`}>
 			<CardHeader>
-				<CardTitle className='font-oldLondon text-3xl'>
+				<CardTitle className={`${props.style.title}`}>
 					{/* Shows title if any, shows "Untitled" otherwise */}
 					{props.title ? (
 						props.title
@@ -42,7 +42,7 @@ export default function Note(props) {
 				</CardTitle>
 				<CardDescription>{date}</CardDescription>
 			</CardHeader>
-			<CardContent>{props.content}</CardContent>
+			<CardContent className={`${props.style.content}`}>{props.content}</CardContent>
 			<CardFooter className='flex justify-between'>
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
