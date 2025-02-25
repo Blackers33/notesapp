@@ -28,10 +28,11 @@ import {
 export default function Note(props) {
 
 	const date = new Date(props.date).toDateString();
+	
 	return (
-		<Card className='w-[350px]'>
+		<Card className={`w-[350px] ${props.style.background}`}>
 			<CardHeader>
-				<CardTitle>
+				<CardTitle className='font-oldLondon text-3xl'>
 					{/* Shows title if any, shows "Untitled" otherwise */}
 					{props.title ? (
 						props.title

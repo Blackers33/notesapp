@@ -1,24 +1,16 @@
 "use client";
 import { nanoid } from "nanoid";
 import * as React from "react";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-
+import { CardContent, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch } from "react-redux";
@@ -54,27 +46,58 @@ function NewNote(props) {
 }
 
 function NoteOptions(props) {
+	const [value, setValue] = React.useState("left");
+
 	return (
 		<CardContent>
 			<form className='mt-6'>
-				<div className='grid w-full items-center gap-4'>
+				<div className='w-full gap-4'>
 					Note color :
-					<div className='flex gap-3'>
+					<div className='flex gap-3 mb-5'>
 						<button
 							type='button'
-							onClick={() => props.setStyle({...props.style, background: "white" })}
+							onClick={() =>
+								props.setStyle({ ...props.style, background: null })
+							}
 							className='border border-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
 						/>
 						<button
 							type='button'
-							//onClick={() => props.setColor("yellow")}
+							onClick={() =>
+								props.setStyle({ ...props.style, background: "bg-yellow-100" })
+							}
 							className='border border-gray-400 bg-gradient-to-br from-yellow-400 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
 						/>
 						<button
 							type='button'
-							//onClick={() => props.setColor("blue")}
+							onClick={() =>
+								props.setStyle({ ...props.style, background: "bg-blue-100" })
+							}
 							className='border border-gray-400 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
 						/>
+						<button
+							type='button'
+							onClick={() =>
+								props.setStyle({ ...props.style, background: "bg-green-100" })
+							}
+							className='border border-gray-400 bg-gradient-to-br from-green-600 to-green-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full w-8 h-8'
+						/>
+					</div>
+					Title style :
+					<div className='flex'>
+						<ToggleGroup.Root
+							type='single'
+							value={value}
+							onValueChange={(value) => {
+								if (value) setValue(value);
+							}}
+						>
+							<ToggleGroup type='single'>
+								<ToggleGroupItem value='left'>left</ToggleGroupItem>
+								<ToggleGroupItem value='center'>center</ToggleGroupItem>
+								<ToggleGroupItem value='right'>right</ToggleGroupItem>
+							</ToggleGroup>
+						</ToggleGroup.Root>
 					</div>
 				</div>
 			</form>
@@ -86,12 +109,12 @@ function NoteTabs() {
 	const [title, setTitle] = React.useState("");
 	const [content, setContent] = React.useState("");
 	const [style, setStyle] = React.useState({
-		background: "hello",
-		title: "title",
-		content: "world",
+		background: null,
+		title: null,
+		content: null,
 	});
 
-	console.log(style)
+	console.log(style);
 
 	async function createNoteInDb({ ...notesData }) {
 		await fetch("/api/notes", {
@@ -140,7 +163,9 @@ function NoteTabs() {
 					/>
 				</TabsContent>
 				{/* NOTE OPTIONS */}
-				<TabsContent value='noteoptions'><NoteOptions style={style} setStyle={setStyle}/></TabsContent>
+				<TabsContent value='noteoptions'>
+					<NoteOptions style={style} setStyle={setStyle} />
+				</TabsContent>
 			</Tabs>
 
 			{/* CARD FOOTER */}
@@ -184,7 +209,7 @@ export default function NotePopover() {
 					</Button>
 				</div>
 			</PopoverTrigger>
-			<PopoverContent className='w-screen sm:w-auto x-8'>
+			<PopoverContent className='w-screen sm:w-[450px] x-8'>
 				<NoteTabs />
 			</PopoverContent>
 		</Popover>
