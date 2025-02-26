@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import Navbar from "./../components/Navbar";
 import Note from "./../components/Note";
-import NotePopover from "./../components/NewNote";
+import NotePopover from "./../components/newnote/NotePopover";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotesFromDb, deleteNote } from "@/app/redux/notes";
 

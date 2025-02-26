@@ -32,17 +32,19 @@ export default function Note(props) {
 	return (
 		<Card className={`w-[350px] ${props.style.background}`}>
 			<CardHeader>
-				<CardTitle className={`${props.style.title}`}>
+				<CardTitle>
 					{/* Shows title if any, shows "Untitled" otherwise */}
 					{props.title ? (
-						props.title
+						<span className={`${props.style.title}`}>{props.title}</span>
 					) : (
 						<span className='text-gray-300 italic'>Untitled</span>
 					)}
 				</CardTitle>
 				<CardDescription>{date}</CardDescription>
 			</CardHeader>
-			<CardContent className={`${props.style.content}`}>{props.content}</CardContent>
+			<CardContent className={`${props.style.content}`}>
+				{props.content}
+			</CardContent>
 			<CardFooter className='flex justify-between'>
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
