@@ -16,18 +16,18 @@ export async function GET() {
 	}
 }
 
-//ADD a note to db
+//ADD a note to db 
 export async function POST(req) {
 	await notesDB();
 	try {
 		const { ...noteData } = await req.json();
-		
+
 		const newNote = new Note({ ...noteData });
 
 		await newNote.save();
 
 		console.log("Note sauvegardée :", newNote);
-	
+
 		return NextResponse.json(newNote, { status: 201 });
 	} catch (error) {
 		console.log(error);
@@ -64,5 +64,13 @@ export async function DELETE(req) {
 			{ status: 500 }
 		);
 	}
+}
+/**
+ * 
+ * @param {number} n 
+ * @returns {number}
+ */
+function fibonnaci(n) {
+	return n;
 }
 

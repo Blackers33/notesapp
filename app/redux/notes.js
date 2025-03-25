@@ -10,6 +10,9 @@ const notesSlice = createSlice({
 	initialState,
 	reducers: {
 		addNote: (state, action) => {
+
+			localStorage.setItem('note', action.payload)
+			
 			state.data.push(action.payload);
 		},
 

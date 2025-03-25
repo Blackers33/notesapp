@@ -24,26 +24,26 @@ import {
 
 
 
+// <Note note={noteData} />
+export default function Note({note, className = '', onDeleteNote}) {
 
-export default function Note(props) {
-
-	const date = new Date(props.date).toDateString();
+	const date = new Date(note.date).toDateString();
 
 	return (
-		<Card className={`w-[350px] ${props.style.background}`}>
+		<Card className={`w-[350px] ${note.style.background} ${className}`}>
 			<CardHeader>
 				<CardTitle>
 					{/* Shows title if any, shows "Untitled" otherwise */}
-					{props.title ? (
-						<span className={`${props.style.title}`}>{props.title}</span>
+					{note.title ? (
+						<span className={`${note.style.title}`}>{note.title}</span>
 					) : (
 						<span className='text-gray-300 italic'>Untitled</span>
 					)}
 				</CardTitle>
 				<CardDescription>{date}</CardDescription>
 			</CardHeader>
-			<CardContent className={`${props.style.content}`}>
-				{props.content}
+			<CardContent className={`${note.style.content}`}>
+				{note.content}
 			</CardContent>
 			<CardFooter className='flex justify-between'>
 				<AlertDialog>
@@ -59,8 +59,8 @@ export default function Note(props) {
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel>Cancel</AlertDialogCancel>
-							<AlertDialogAction onClick={() => props.onDeleteNote(props.id)}>
-								Continue
+							<AlertDialogAction onClick={() => onDeleteNote(note.id)}>
+								Delete
 							</AlertDialogAction>
 						</AlertDialogFooter>
 					</AlertDialogContent>

@@ -40,7 +40,7 @@ function Home() {
 					.slice()
 					.reverse()
 					.map((note) => (
-						<Note {...note} key={note.id} onDeleteNote={handleDeleteNote} />
+						<Note note={note} key={note.id} onDeleteNote={handleDeleteNote} />
 					))}
 			</div>
 			<NotePopover />
