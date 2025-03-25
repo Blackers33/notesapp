@@ -14,10 +14,13 @@ function Home() {
 	//TODO : suppr
 	async function handleDeleteNote(id) {
 		dispatch(deleteNote(id));
-		const result = await fetch("http://localhost:3000/api/notes?id=" + id, {
+		/**
+		 * DEMO MODE
+		 */
+		/* const result = await fetch("http://localhost:3000/api/notes?id=" + id, {
 			method: "DELETE",
 		});
-		if (result.status !== 200) console.log("Error deleting note");
+		if (result.status !== 200) console.log("Error deleting note"); */
 	}
 
 	async function fetchNotesFromDb() {
@@ -25,10 +28,12 @@ function Home() {
 		const data = await res.json();
 		dispatch(addNotesFromDb(data));
 	}
-
-	useEffect(() => {
+/**
+ * DEMO MODE
+ */
+/* 	useEffect(() => {
 		fetchNotesFromDb();
-	}, []);
+	}, []); */
 
 
 

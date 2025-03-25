@@ -36,9 +36,13 @@ export default function NoteTabs() {
 		if (content) {
 			const id = nanoid();
 			const date = new Date();
-
+			
+			/**
+			 * DEMO MODE
+			 */
 			//Add to database
-			await createNoteInDb({ title, content, date, id, style });
+			//await createNoteInDb({ title, content, date, id, style });
+
 			//Add to redux
 			dispatch(
 				addNote({
