@@ -9,6 +9,7 @@ export async function GET() {
 		const notes = await Note.find({});
 		return NextResponse.json(notes);
 	} catch (error) {
+		console.error("Error fetching notes:", error);
 		return NextResponse.json(
 			{ error: "Erreur de récupération" },
 			{ status: 500 }
