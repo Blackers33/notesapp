@@ -65,12 +65,4 @@ export async function DELETE(req) {
 		);
 	}
 }
-/**
- * 
- * @param {number} n 
- * @returns {number}
- */
-function fibonnaci(n) {
-	return n;
-}
 
