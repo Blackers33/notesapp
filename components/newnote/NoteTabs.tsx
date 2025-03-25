@@ -26,7 +26,7 @@ export default function NoteTabs() {
 		content: null,
 	});
 
-	async function createNoteInDb(notesData: {
+/* 	async function createNoteInDb(notesData: {
 		title: string;
 		content: string;
 		date: Date;
@@ -38,7 +38,7 @@ export default function NoteTabs() {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(notesData),
 		});
-	}
+	} */
 
 	const dispatch = useDispatch();
 
