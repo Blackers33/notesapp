@@ -10,23 +10,33 @@ import { addNote } from "@/app/redux/notes";
 import NoteOptions from "./NoteOptions";
 import NoteComposer from "./NoteComposer";
 
-export default function NoteTabs() {
+export type Style = {
+	background: string | null;
+	title: string;
+	content: string | null;
+};
 
-	const [title, setTitle] = React.useState("");
-	const [content, setContent] = React.useState("");
-	const [style, setStyle] = React.useState({
+export default function NoteTabs() {
+	const [title, setTitle] = React.useState<string>("");
+	const [content, setContent] = React.useState<string>("");
+
+	const [style, setStyle] = React.useState<Style>({
 		background: null,
 		title: "text-xl",
 		content: null,
 	});
 
-	console.log(style);
-
-	async function createNoteInDb({ ...notesData }) {
+	async function createNoteInDb(notesData: {
+		title: string;
+		content: string;
+		date: Date;
+		id: string;
+		style: Style;
+	}) {
 		await fetch("/api/notes", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ ...notesData }),
+			body: JSON.stringify(notesData),
 		});
 	}
 
@@ -59,11 +69,11 @@ export default function NoteTabs() {
 	return (
 		<>
 			<Tabs defaultValue='notecomposer' className='w-auto'>
-				{/* NOTE EDITOR */}
 				<TabsList className='grid w-full grid-cols-2'>
 					<TabsTrigger value='notecomposer'>Create Note</TabsTrigger>
 					<TabsTrigger value='noteoptions'>Options</TabsTrigger>
 				</TabsList>
+
 				<TabsContent value='notecomposer'>
 					<NoteComposer
 						onUpdated={({ title, content }) => {
@@ -72,13 +82,12 @@ export default function NoteTabs() {
 						}}
 					/>
 				</TabsContent>
-				{/* NOTE OPTIONS */}
+
 				<TabsContent value='noteoptions'>
 					<NoteOptions style={style} setStyle={setStyle} />
 				</TabsContent>
 			</Tabs>
 
-			{/* CARD FOOTER */}
 			<CardFooter className='flex justify-between'>
 				<PopoverClose asChild>
 					<Button variant='outline'>Cancel</Button>

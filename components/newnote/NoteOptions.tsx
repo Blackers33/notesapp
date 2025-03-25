@@ -2,11 +2,17 @@
 import * as React from "react";
 import { CardContent } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Style } from "./NoteTabs";
+
+
+
 
 type OptionsProps = {
 	style: { background: null | string; title: string; content: null | string };
-	setStyle: Function;
+	setStyle: (style: Style) => void;
 };
+
+
 
 export default function NoteOptions(props: OptionsProps) {
 	return (
